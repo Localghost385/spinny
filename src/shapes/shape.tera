@@ -1,4 +1,3 @@
-
 pub struct Solids {
     {% for shape in shapes.shapes -%}
         {{ shape.name }}: Solid,
@@ -14,9 +13,9 @@ impl Solids {
                     Face::new(vec![
                         {% for point in face.points -%}
                         Point::new(
-                            {{ point[0] }} as f32,
-                            {{ point[1] }} as f32,
-                            {{ point[2] }} as f32
+                            {{ point[0] }}_f32,
+                            {{ point[1] }}_f32,
+                            {{ point[2] }}_f32
                         ),
                         {% endfor %}
                     ]),
@@ -24,5 +23,11 @@ impl Solids {
                 ]),
             {% endfor %}
         }
+    }
+}
+
+impl Default for Solids {
+    fn default() -> Self {
+        Self::new()
     }
 }

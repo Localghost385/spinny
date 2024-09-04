@@ -1,4 +1,3 @@
-
 include!(concat!(env!("OUT_DIR"), "/shape.rs"));
 
 use spinny::{
@@ -7,7 +6,23 @@ use spinny::{
 };
 
 fn main() {
-    let mut shapes: Solids = Solids::new();
-    rotate_and_display(&mut shapes.cube, 0.02, 0.025, 0.012, 0.042)
-}
+    let shapes: Solids = Solids::default();
 
+    let selector = "cube";
+
+    let mut shape: Solid;
+
+    match selector {
+        "cube" => {
+            shape = shapes.cube;
+        }
+        "tetrahedron" => {
+            shape = shapes.tetrahedron;
+        }
+        _ => {
+            shape = shapes.cube;
+        }
+    };
+
+    rotate_and_display(&mut shape, 0.02, 0.025, 0.012, 0.042)
+}

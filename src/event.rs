@@ -1,8 +1,8 @@
 // --------------------[ Event loop ]-------------------- //
 use crossterm::terminal::{Clear, ClearType};
 use crossterm::{cursor, execute};
-use std::time::Duration;
 use std::thread::sleep;
+use std::time::Duration;
 
 use crate::{matrix::rotate_object, renderer::render_edges, solids::Solid};
 
@@ -21,9 +21,9 @@ pub fn rotate_and_display(
 
         // Render the new frame
         let canvas = render_edges(object, 50, 25, 0.06);
-        for row in &canvas {
-            for char in 0..row.len() {
-                print!("{}", row[char])
+        for row in canvas {
+            for char in row {
+                print!("{}", char)
             }
             println!()
         }

@@ -12,7 +12,7 @@ pub fn render_edges(object: &mut Solid, width: usize, height: usize, scale: f32)
         y2: f32,
     }
 
-    fn draw_line(canvas: &mut Vec<Vec<char>>, width: usize, height: usize, scale: f32, line: Line) {
+    fn draw_line(canvas: &mut [Vec<char>], width: usize, height: usize, scale: f32, line: Line) {
         // Transform coordinates
         let x1 = ((width as f32 / 2.0) + line.x1 * scale * 2.0).round() as isize;
         let y1 = ((height as f32 / 2.0) - line.y1 * scale).round() as isize;
@@ -33,7 +33,7 @@ pub fn render_edges(object: &mut Solid, width: usize, height: usize, scale: f32)
         let mut e2;
 
         let mut d = 2 * err - if dx > dy { dy } else { dx };
-        let mut twovdxdy = 2 * (two_dx - two_dy);
+        let twovdxdy = 2 * (two_dx - two_dy);
 
         loop {
             // Plot the main pixel
@@ -58,7 +58,7 @@ pub fn render_edges(object: &mut Solid, width: usize, height: usize, scale: f32)
     }
 
     fn plot_pixel(
-        canvas: &mut Vec<Vec<char>>,
+        canvas: &mut [Vec<char>],
         width: usize,
         height: usize,
         x: isize,
