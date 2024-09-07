@@ -8,6 +8,8 @@ build = "build.rs"
 crossterm = "0.28.1"
 serde = "1.0.209"
 toml = "0.8.19"
+clap = { version = "4.5.16", features = ["derive"] }
+clap_complete = "4.5.23"
 
 [build-dependencies]
 serde = "1.0.209"

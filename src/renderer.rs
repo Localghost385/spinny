@@ -12,74 +12,43 @@ pub fn render_edges(object: &mut Solid, width: usize, height: usize, scale: f32)
         y2: f32,
     }
 
-    fn draw_line(canvas: &mut [Vec<char>], width: usize, height: usize, scale: f32, line: Line) {
-        // Transform coordinates
-        let x1 = ((width as f32 / 2.0) + line.x1 * scale * 2.0).round() as isize;
-        let y1 = ((height as f32 / 2.0) - line.y1 * scale).round() as isize;
-        let x2 = ((width as f32 / 2.0) + line.x2 * scale * 2.0).round() as isize;
-        let y2 = ((height as f32 / 2.0) - line.y2 * scale).round() as isize;
-
-        let dx = (x2 - x1).abs();
-        let dy = (y2 - y1).abs();
-        let mut x = x1;
-        let mut y = y1;
-
-        let sx = if x1 < x2 { 1 } else { -1 };
-        let sy = if y1 < y2 { 1 } else { -1 };
-
-        let mut err = dx - dy;
-        let two_dx = 2 * dx;
-        let two_dy = 2 * dy;
-        let mut e2;
-
-        let mut d = 2 * err - if dx > dy { dy } else { dx };
-        let twovdxdy = 2 * (two_dx - two_dy);
-
-        loop {
-            // Plot the main pixel
-            plot_pixel(canvas, width, height, x, y, d);
-
-            if x == x2 && y == y2 {
-                break;
-            }
-
-            e2 = 2 * err;
-            if e2 > -dy {
-                err -= dy;
-                x += sx;
-            }
-            if e2 < dx {
-                err += dx;
-                y += sy;
-            }
-
-            d += twovdxdy;
-        }
-    }
-
-    fn plot_pixel(
+    fn draw_line(
         canvas: &mut [Vec<char>],
         width: usize,
         height: usize,
-        x: isize,
-        y: isize,
-        d: isize,
+        scale: f32,
+        mut line: Line,
     ) {
-        if x >= 0 && x < width as isize && y >= 0 && y < height as isize {
-            let intensity = compute_intensity(d);
-            let pixel_char = match intensity {
-                0..=8 => '▓',
-                _ => '█',
-            };
-            canvas[y as usize][x as usize] = pixel_char;
-        }
-    }
+        line.x1 = ((width / 2) as f32 + line.x1 * scale * 2.0).round();
+        line.y1 = ((height / 2) as f32 - line.y1 * scale).round();
+        line.x2 = ((width / 2) as f32 + line.x2 * scale * 2.0).round();
+        line.y2 = ((height / 2) as f32 - line.y2 * scale).round();
 
-    fn compute_intensity(d: isize) -> isize {
-        // Compute pixel intensity based on distance
-        let max_intensity = 255;
-        let distance_factor = (d.abs() as f32 / max_intensity as f32).min(1.0);
-        (max_intensity as f32 * (1.0 - distance_factor)) as isize
+        let dx: f32 = (line.x2 - line.x1).abs();
+        let dy: f32 = (line.y2 - line.y1).abs();
+        let sx: i8 = if line.x1 < line.x2 { 1 } else { -1 };
+        let sy: i8 = if line.y1 < line.y2 { 1 } else { -1 };
+        let mut err: f32 = dx - dy;
+
+        loop {
+            if (0.0 <= line.x1 && line.x1 < width as f32)
+                && (0.0 <= line.y1 && line.y1 < height as f32)
+            {
+                canvas[line.y1 as usize][line.x1 as usize] = '█';
+            }
+            if line.x1 == line.x2 && line.y1 == line.y2 {
+                break;
+            }
+            let e2: f32 = err * 2.0;
+            if e2 > -dy {
+                err -= dy;
+                line.x1 += sx as f32;
+            }
+            if e2 < dx {
+                err += dx;
+                line.y1 += sy as f32;
+            }
+        }
     }
 
     for face in &object.faces {
