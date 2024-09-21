@@ -1,8 +1,18 @@
 use crate::utils::to_string;
 use clap::Parser;
 
+const VERSION: &str = concat!(
+    "spinny v",
+    env!("CARGO_PKG_VERSION_MAJOR"),
+    ".",
+    env!("CARGO_PKG_VERSION_MINOR"),
+    ".",
+    env!("CARGO_PKG_VERSION_PATCH"),
+);
+
+
 #[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
+#[command(version = VERSION, about, long_about = None)]
 pub struct CliOptions {
     /// Shape to process (e.g., "cube", "tetrahedron")
     #[arg(default_value_t = to_string("cube"))]
