@@ -1,5 +1,6 @@
 [[shapes]]
-name = "cube"
+camel_name = "Cube"
+snake_name = "cube"
 faces = [
     { points = [
         [
@@ -135,7 +136,8 @@ faces = [
     ] },
 ]
 [[shapes]]
-name = "tetrahedron"
+camel_name = "Tetrahedron"
+snake_name = "tetrahedron"
 faces = [
 
     { points = [

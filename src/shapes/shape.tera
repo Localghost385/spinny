@@ -1,26 +1,25 @@
+use spinny::solids::{Point, Face};
+
+#[derive(Clone, Debug)]
 pub struct Solids {
-    {% for shape in shapes.shapes -%}
-        {{ shape.name }}: Solid,
+    {% for shape in shapes.shapes %}
+    pub {{ shape.snake_name }}: Solid,
     {% endfor %}
 }
 
 impl Solids {
     pub fn new() -> Self {
         Solids {
-            {% for shape in shapes.shapes -%}
-                {{ shape.name }}: Solid::new(vec![
-                    {% for face in shape.faces -%}
-                    Face::new(vec![
-                        {% for point in face.points -%}
-                        Point::new(
-                            {{ point[0] }}_f32,
-                            {{ point[1] }}_f32,
-                            {{ point[2] }}_f32
-                        ),
-                        {% endfor %}
-                    ]),
+            {% for shape in shapes.shapes %}
+            {{ shape.snake_name }}: Solid::new(vec![
+                {% for face in shape.faces %}
+                Face::new(vec![
+                    {% for point in face.points %}
+                    Point::new({{ point[0] }}_f32, {{ point[1] }}_f32, {{ point[2] }}_f32),
                     {% endfor %}
                 ]),
+                {% endfor %}
+            ]),
             {% endfor %}
         }
     }

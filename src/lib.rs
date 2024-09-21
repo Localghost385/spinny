@@ -9,3 +9,9 @@ pub mod renderer;
 
 /// The main event loop
 pub mod event;
+
+/// The Cli argument parser
+pub mod cli;
+
+/// Utils
+pub mod utils;
